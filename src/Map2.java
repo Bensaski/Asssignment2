@@ -24,7 +24,7 @@ public class Map2 extends JPanel {
     private int direction = -1;
     private int deaths = 0;
     int Life = 0;
-    int MaxLife = 3;
+
 
 
     private boolean inGame = true;
@@ -60,12 +60,12 @@ public class Map2 extends JPanel {
 
         covids = new ArrayList<>();
 
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 10; j++) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 11; j++) { //This determines how many rows and columns of Covid Spawn
 
-                var alien = new Covid(Variables.CovidInitX + 70 * j,
+                var CovidActor = new Covid(Variables.CovidInitX + 70 * j, //this determines the gap between each covid
                         Variables.CovidInitY + 50 * i);
-                covids.add(alien);
+                covids.add(CovidActor);
             }
         }
 
@@ -270,20 +270,20 @@ public class Map2 extends JPanel {
             int shotX = dispense.getX();
             int shotY = dispense.getY();
 
-            for (Covid alien : covids) {
+            for (Covid CovidActors : covids) {
 
-                int alienX = alien.getX();
-                int alienY = alien.getY();
+                int CovidActorX = CovidActors.getX();
+                int CovidActorY = CovidActors.getY();
 
-                if (alien.isVisible() && dispense.isVisible()) {
-                    if (shotX >= (alienX)
-                            && shotX <= (alienX + Variables.CovidWidth)
-                            && shotY >= (alienY)
-                            && shotY <= (alienY + Variables.CovidHeight)) {
+                if (CovidActors.isVisible() && dispense.isVisible()) {
+                    if (shotX >= (CovidActorX)
+                            && shotX <= (CovidActorX + Variables.CovidWidth)
+                            && shotY >= (CovidActorY)
+                            && shotY <= (CovidActorY + Variables.CovidHeight)) {
 
                         var ii = new ImageIcon(explImg);
-                        alien.setImage(ii.getImage());
-                        alien.setDying(true);
+                        CovidActors.setImage(ii.getImage());
+                        CovidActors.setDying(true);
                         deaths++;
                         dispense.die();
                     }
@@ -305,7 +305,7 @@ public class Map2 extends JPanel {
             }
         }
 
-        // aliens
+        // Covid Actor movement
 
         for (Covid covid : covids) {
 
@@ -399,7 +399,7 @@ public class Map2 extends JPanel {
         }
         var generator2 = new Random();
         for (Covid covid : covids) {
-            int shoot = generator2.nextInt(100);
+            int shoot = generator2.nextInt(10000); //determines the chance of a mask spawnin
             Covid.Mask mask = covid.getMask();
 
             if (shoot == Variables.Chance && covid.isVisible() && mask.isDestroyed2()) {

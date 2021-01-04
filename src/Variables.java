@@ -14,8 +14,8 @@ public interface Variables {
     int CovidInitX = 150;
     int CovidInitY = 5;
 
-    int GoDown = 20;
-    int AmountOfCovidToKill = 60;
+    int GoDown = 50;
+    int AmountOfCovidToKill = 88;
     int Chance = 1;
     int Delay = 10;
     int PlayerWidth = 50;
