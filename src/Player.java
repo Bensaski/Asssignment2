@@ -19,7 +19,7 @@ public class Player extends Sprite {
         int Start_x = 270;
         setX(Start_x);
 
-        int Start_y = 870; //the level at which the player spawns (just above floor level)
+        int Start_y = 830; //the level at which the player spawns (just above floor level)
         setY(Start_y);
     }
 

@@ -127,7 +127,7 @@ public class Map2 extends JPanel {
 
             Covid.Mask b = a.getMask();
 
-            if (!b.isDestroyed()) {
+            if (!b.isDestroyed2()) {
 
                 g.drawImage(b.getImage(), b.getX(), b.getY(), this);
             }
@@ -347,7 +347,7 @@ public class Map2 extends JPanel {
             }
         }
 
-        // bombs
+        // Germ generation
         var generator = new Random();
 
         for (Covid covid : covids) {
@@ -402,8 +402,8 @@ public class Map2 extends JPanel {
             int shoot = generator2.nextInt(100);
             Covid.Mask mask = covid.getMask();
 
-            if (shoot == Variables.Chance && covid.isVisible() && mask.isDestroyed()) {
-                mask.setDestroyed(false);
+            if (shoot == Variables.Chance && covid.isVisible() && mask.isDestroyed2()) {
+                mask.setDestroyed2(false);
                 mask.setX(covid.getX());
                 mask.setY(covid.getY());
             }
@@ -412,11 +412,11 @@ public class Map2 extends JPanel {
             int playerX = player.getX();
             int playerY = player.getY();
 
-            if (player.isVisible() && !mask.isDestroyed()) {
+            if (player.isVisible() && !mask.isDestroyed2()) {
                 if (maskX >= (playerX) && maskX <= (playerX + Variables.PlayerWidth)
                         && maskY >= (playerY)
                         && maskY <= (playerY + Variables.PlayerHeight)) {
-                    mask.setDestroyed(true);
+                    mask.setDestroyed2(true);
                     if (Life <= 2) {
                         Life = Life + 1;
                         System.out.println(Life);
@@ -427,13 +427,13 @@ public class Map2 extends JPanel {
 
                 }
             }
-            if (!mask.isDestroyed()) {
+            if (!mask.isDestroyed2()) {
 
                 mask.setY(mask.getY() + 1);
 
                 if (mask.getY() >= Variables.FloorLevel - Variables.MaskHeight) {
 
-                    mask.setDestroyed(true);
+                    mask.setDestroyed2(true);
                 }
             }
 

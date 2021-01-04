@@ -70,7 +70,7 @@ public class Covid extends Sprite {
         private boolean destroyed;
         public Mask(int x, int y) { initMask(x,y);}
         private void initMask(int x, int y){
-            setDestroyed(true);
+            setDestroyed2(true);
             this.x=x;
             this.y=y;
 
@@ -78,11 +78,11 @@ public class Covid extends Sprite {
             var ii = new ImageIcon(maskImg);
             setImage(ii.getImage());
         }
-        public void setDestroyed(boolean destroyed){
+        public void setDestroyed2(boolean destroyed){
             this.destroyed = destroyed;
         }
 
-        public boolean isDestroyed(){
+        public boolean isDestroyed2(){
             return destroyed;
         }
     }
