@@ -1,36 +1,35 @@
 import javax.swing.*;
 
-public class Covid extends Sprite {
+public class UKCovid extends Sprite {
+    private UKCovid.Germ germ;
+    private UKCovid.Mask mask;
 
-    private Germ germ;
-    private Mask mask;
-
-    public Covid(int x, int y) {
-        initCovid(x, y);
+    public UKCovid(int x, int y) {
+        initUkCovid(x, y);
     }
 
-    private void initCovid(int x, int y) {
+    private void initUkCovid(int x, int y) {
 
         this.x = x;
         this.y = y;
 
-        germ = new Germ(x, y);
-        mask = new Mask(x,y);
+        germ = new UKCovid.Germ(x, y);
+        mask = new UKCovid.Mask(x,y);
 
-        var CovidImg = "src/Images/covid4.png";
+        var CovidImg = "src/Images/UkCovid.png";
         var ii = new ImageIcon(CovidImg);
 
 
         setImage(ii.getImage());
     }
 
-    public void act(int direction) {
+    public void UKAct(int direction) {
 
         this.x += direction;
 
     }
 
-    public Germ getGerm() {
+    public UKCovid.Germ getGerm() {
         return germ;
     }
 
@@ -62,7 +61,7 @@ public class Covid extends Sprite {
         }
     }
 
-    public Mask getMask() {
+    public UKCovid.Mask getMask() {
         return mask;
     }
 
@@ -89,3 +88,5 @@ public class Covid extends Sprite {
     }
 
 }
+
+
