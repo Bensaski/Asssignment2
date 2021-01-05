@@ -48,8 +48,7 @@ public class Map2 extends JPanel {
 
 
     public Map2(){
-        Variables var = new Variables();
-        var.Doing();
+
         initMap();
         gameInit();
         bgimage();
@@ -271,46 +270,83 @@ public void bgimage() {
 
              inGame = false;
              timer.stop();
-             message = "Game won!";
+             message = "Game won! The Vaccine has been distributed across the population whilst you were fighting off the Covid Invasion. Thanks to the Virus, threats of Covid-19 have been lowered greatly.";
              long end = System.currentTimeMillis();
              TimeElapsed = (end - start) / 1000;
              //System.out.println("It took you " +(end-start)/1000 + " Seconds to destroy the Covid Invasion!");
              JOptionPane.showMessageDialog(null, "It took you " + TimeElapsed + " Seconds to destroy the Covid Invasion!");
 
-             File myFile = new File("highscore.txt");
-             FileWriter fw;
-             try {
-                 fw = new FileWriter(myFile, true);
-                 fw.write(name + ": " + TimeElapsed + "\n");
-                 fw.close();
+             if(Variables.Choice.equals("Easy")) {
+                 File myFile = new File("src/HighScoreEasy.txt");
+                 FileWriter fw;
+                 try {
+                     fw = new FileWriter(myFile, true);
+                     fw.write(name + ": " + TimeElapsed + "\n");
+                     fw.close();
 
 
-             } catch (IOException e) {
-                 e.printStackTrace();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+
+                 List<Person> persons;
+                 try {
+                     persons = Files.lines(Path.of("src/HighScoreEasy.txt"))
+                             .map(Person::parseLine)
+                             .collect(Collectors.toList());
+
+                     persons.sort(Comparator.comparingInt(Person::getScore));
+
+                     List<String> lines = persons.stream()
+                             .map(Person::toLine)
+                             .collect(Collectors.toList());
+                     Files.write(Path.of("src/HighScoreEasy.txt"), lines);
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+
+                 try {
+                     HighScore();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
              }
 
-             List<Person> persons;
-             try {
-                 persons = Files.lines(Path.of("highscore.txt"))
-                         .map(Person::parseLine)
-                         .collect(Collectors.toList());
+             if(Variables.Choice.equals("Hard")) {
+                 File myFile = new File("src/HighScoreHard.txt");
+                 FileWriter fw;
+                 try {
+                     fw = new FileWriter(myFile, true);
+                     fw.write(name + ": " + TimeElapsed + "\n");
+                     fw.close();
 
-                 persons.sort(Comparator.comparingInt(Person::getScore));
 
-                 List<String> lines = persons.stream()
-                         .map(Person::toLine)
-                         .collect(Collectors.toList());
-                 Files.write(Path.of("highscore.txt"), lines);
-             } catch (IOException e) {
-                 e.printStackTrace();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+
+                 List<Person> persons;
+                 try {
+                     persons = Files.lines(Path.of("src/HighScoreHard.txt"))
+                             .map(Person::parseLine)
+                             .collect(Collectors.toList());
+
+                     persons.sort(Comparator.comparingInt(Person::getScore));
+
+                     List<String> lines = persons.stream()
+                             .map(Person::toLine)
+                             .collect(Collectors.toList());
+                     Files.write(Path.of("src/HighScoreHard.txt"), lines);
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+
+                 try {
+                     HighScore();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
              }
-
-             try {
-                 HighScore();
-             } catch (IOException e) {
-                 e.printStackTrace();
-             }
-
 
          }
          // player
@@ -485,6 +521,7 @@ public void bgimage() {
 
                      } else {
                          Life = Life - 1;
+                         germ.setDestroyed(true);
                      }
                  }
              }
@@ -579,24 +616,20 @@ public void bgimage() {
 
                         //We run this play sound method in a new thread otherwise the game would pause until the sound has been played, which we dont want
                         new Thread(
-                                new Runnable() {
-                                    public void run() {
-                                        try {
-                                            Music.playSound("src/Mask.wav"); // This plays the shooting sound for picking up the masks
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
+                                () -> {
+                                    try {
+                                        Music.playSound("src/Mask.wav"); // This plays the shooting sound for picking up the masks
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
                                 }).start();
                         if(Life == 3){
                             new Thread(
-                                    new Runnable() {
-                                        public void run() {
-                                            try {
-                                                Music.playSound("src/PowerUp.wav"); // This plays power up sound when the player hits 3 lives and they begin shooting faster
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
+                                    () -> {
+                                        try {
+                                            Music.playSound("src/PowerUp.wav"); // This plays power up sound when the player hits 3 lives and they begin shooting faster
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
                                     }).start();
                         }
@@ -620,17 +653,33 @@ public void bgimage() {
         }
     }
 
-    public static void HighScore() throws IOException {
+    public void HighScore() throws IOException {
         String input = "";
+        if(Variables.Choice.equals("Easy")){
+        BufferedReader reader = new BufferedReader(new FileReader("src/HighScoreEasy.txt"));
 
-        BufferedReader reader = new BufferedReader(new FileReader("highscore.txt"));
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            //Add the line and then "\n" indicating a new line
-            input += line + "\n";
+
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                //Add the line and then "\n" indicating a new line
+                input += line + "\n";
+            }
+            reader.close();
+            JOptionPane.showMessageDialog(null,input,"High Scores", JOptionPane.INFORMATION_MESSAGE);
         }
-        reader.close();
-        JOptionPane.showMessageDialog(null,input,"High Scores", JOptionPane.INFORMATION_MESSAGE);
+        if (Variables.Choice.equals("Hard")) {
+            BufferedReader reader = new BufferedReader(new FileReader("src/HighScoreHard.txt"));
+
+
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                //Add the line and then "\n" indicating a new line
+                input += line + "\n";
+            }
+            reader.close();
+            JOptionPane.showMessageDialog(null,input,"High Scores", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
 
     private void doGameCycle() {
@@ -678,7 +727,4 @@ public void bgimage() {
             }
         }
     }
-
-
-
 }
